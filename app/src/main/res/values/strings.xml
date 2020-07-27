@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Bunker</string>
+    <string name="bunker">Bunker</string>
+    <string name="join_game">Join lobby</string>
+    <string name="new_game">Create lobby</string>
+    <string name="description_settings">Settings</string>
+    <string name="game_id">Game ID</string>
+    <string name="dialog_join">Join game</string>
+    <string name="dialog_close">Cancel</string>
+    <string name="lobby">Lobby</string>
+    <string name="editLobby">Edit lobby</string>
+    <string name="startGame">Open Lobby</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="emailHint">example@example.com</string>
+    <string name="signUpBtn">Sign Up</string>
+    <string name="loginBtn">Log In</string>
+    <string name="passwordHint">***** </string>
+    <string name="orLogin">OR</string>
+    <string name="profile">Profile</string>
+    <string name="logoutAlert">Do you want to logout?</string>
+    <string name="logoutPositive">Proceed</string>
+    <string name="logoutNegative">Cancel</string>
+    <string name="usernameSignUp">Username</string>
+    <string name="lobbyBtnPlay">Play</string>
+</resources>

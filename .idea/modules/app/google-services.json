@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "929458656157",
+    "firebase_url": "https://bunker-project.firebaseio.com",
+    "project_id": "bunker-project",
+    "storage_bucket": "bunker-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929458656157:android:9701a72261120430c95574",
+        "android_client_info": {
+          "package_name": "com.example.bunker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929458656157-nlmu8fbkaqtgai74p81l0shcjj4h9rns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bunker",
+            "certificate_hash": "528fe1ec5b4abe78f2422cc1aef75c5473426310"
+          }
+        },
+        {
+          "client_id": "929458656157-llfbqd5oi19e96qrio4n1eu40msrdk9o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHdov5VC9SDSIZxMAy4WzQlXG-7JkW2yA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929458656157-llfbqd5oi19e96qrio4n1eu40msrdk9o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
