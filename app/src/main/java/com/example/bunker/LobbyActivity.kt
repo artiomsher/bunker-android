@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -38,19 +39,20 @@ class LobbyActivity : AppCompatActivity() {
         val db = Firebase.firestore
         val date = Date()
         val mAuth = FirebaseAuth.getInstance()
+        val timestamp = Timestamp.now()
         db.collection("games").orderBy("time", Query.Direction.DESCENDING).limit(1).get()
             .addOnSuccessListener { queryDocumentSnapshots ->
                 for (snap in queryDocumentSnapshots) {
                     gameID = snap.getLong("id")!!.toInt()
                 }
                 val game = hashMapOf(
-                    "id" to gameID + 1,
-                    "time" to "" + date,
+                    "id" to (gameID + 1),
+                    "time" to timestamp.toDate(),
                     "numOfPlayers" to 1,
                     "host" to mAuth.currentUser!!.displayName,
                     "currentPlayers" to arrayListOf(mAuth.currentUser!!.displayName)
                 )
-                db.collection("games").document(date.toString()).set(game)
+                db.collection("games").document((gameID + 1).toString()).set(game)
             }
     }
 }

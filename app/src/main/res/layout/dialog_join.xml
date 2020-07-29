@@ -9,8 +9,8 @@
         android:background="#FFFFBB33"
         android:contentDescription="@string/app_name" />
     <EditText
-        android:id="@+id/username"
-        android:inputType="textEmailAddress"
+        android:id="@+id/gameID"
+        android:inputType="number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

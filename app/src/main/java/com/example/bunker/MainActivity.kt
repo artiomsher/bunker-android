@@ -5,14 +5,21 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.dialog_join.view.*
 import kotlin.math.log
 
 
@@ -35,13 +42,10 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         val button = findViewById<Button>(R.id.createButton)
-
         button.setOnClickListener{
             val intent = Intent(this, LobbyActivity::class.java)
             startActivity(intent)
         }
-
-        mAuth = FirebaseAuth.getInstance()
 
         loginBtn = findViewById(R.id.profileBtn)
 
@@ -52,8 +56,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 logoutDialog()
             }
-
-
         }
         updateNickname()
     }
@@ -62,15 +64,23 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         updateNickname()
     }
-    private fun joinDialog(savedInstanceState: View?) {
+    public fun joinDialog(savedInstanceState: View?) {
         val builder = AlertDialog.Builder(this)
-        // Inflate and set the layout for the dialog
+        val db = Firebase.firestore
+        val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.dialog_join, null)
         // Pass null as the parent view because its going in the dialog layout
-        builder.setView(layoutInflater.inflate(R.layout.dialog_join, null))
-            // Add action buttons
+        builder.setView(view)
             .setPositiveButton(R.string.dialog_join,
                     DialogInterface.OnClickListener { dialog, id ->
-                        // joined the game...
+                        val enteredID = view.gameID.text.toString()
+                        db.collection("games").document(enteredID)
+                            .update("currentPlayers", FieldValue.arrayUnion(mAuth.currentUser!!.displayName))
+                            .addOnSuccessListener {
+                                joinLobby()
+                            }
+                            .addOnFailureListener{
+                                Log.d("FAILURE", "Cannot connect to lobby")
+                            }
                     })
             .setNegativeButton(R.string.dialog_close,
                     DialogInterface.OnClickListener { dialog, id ->
@@ -98,10 +108,15 @@ class MainActivity : AppCompatActivity() {
     private fun updateNickname() {
         mAuth = FirebaseAuth.getInstance()
         if(mAuth.currentUser == null) {
-            username.text = "NOT LOGGED IN"
+            username.text = getString(R.string.logginFail)
         }
         else {
             username.text = mAuth.currentUser?.displayName
         }
     }
+    private fun joinLobby() {
+        val intent = Intent(this, LobbyActivity::class.java)
+        startActivity(intent)
+    }
+
 }
