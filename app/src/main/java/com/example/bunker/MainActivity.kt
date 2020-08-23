@@ -7,20 +7,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Adapter
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.dialog_join.view.*
-import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
@@ -83,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                             }
                     })
             .setNegativeButton(R.string.dialog_close,
-                    DialogInterface.OnClickListener { dialog, id ->
+                    DialogInterface.OnClickListener { dialog, _ ->
                         dialog.cancel()
                     })
             builder.create()
@@ -118,5 +116,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LobbyActivity::class.java)
         startActivity(intent)
     }
+
+
 
 }

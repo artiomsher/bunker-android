@@ -31,4 +31,5 @@
     <string name="usernameSignUp">Username</string>
     <string name="lobbyBtnPlay">Play</string>
     <string name="logginFail">NOT LOGGED IN</string>
+    <string name="lobbyID">ID: %d</string>
 </resources>
