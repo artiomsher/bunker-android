@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class LobbyActivity : AppCompatActivity() {
     private var gameID = 0
     private var listOfPlayers = arrayListOf<String>()
@@ -36,6 +38,13 @@ class LobbyActivity : AppCompatActivity() {
         textViewForID = findViewById<TextView>(R.id.textViewID)
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
         progressBar.visibility = View.GONE
+        if(intent.hasExtra("gameID")) {
+            openLobby.visibility = View.GONE
+            gameID = intent.getIntExtra("gameID", 0)
+            textViewForID.text = getString(R.string.lobbyID, gameID)
+            getPlayersFromFirestore()
+
+        }
         openLobby.setOnClickListener {
             createLobby()
         }
@@ -44,7 +53,7 @@ class LobbyActivity : AppCompatActivity() {
 
     private fun getPlayersFromFirestore() {
         progressBar.visibility = View.VISIBLE
-        db.collection("games").document((gameID + 1).toString()).get()
+        db.collection("games").document((gameID).toString()).get()
             .addOnSuccessListener { document ->
                     listOfPlayers = document.data!!.get("currentPlayers") as ArrayList<String>
             }.addOnCompleteListener {
@@ -60,22 +69,22 @@ class LobbyActivity : AppCompatActivity() {
         db.collection("games").orderBy("time", Query.Direction.DESCENDING).limit(1).get()
             .addOnSuccessListener { queryDocumentSnapshots ->
                 for (snap in queryDocumentSnapshots) {
-                    gameID = snap.getLong("id")!!.toInt()
+                    gameID = snap.getLong("id")!!.toInt() + 1
                 }
                 val game = hashMapOf(
-                    "id" to (gameID + 1),
+                    "id" to (gameID),
                     "time" to timestamp.toDate(),
                     "numOfPlayers" to 1,
                     "host" to mAuth.currentUser!!.displayName,
                     "currentPlayers" to arrayListOf(mAuth.currentUser!!.displayName)
                 )
-                db.collection("games").document((gameID + 1).toString()).set(game)
+                db.collection("games").document((gameID).toString()).set(game)
                 openLobby.text = getString(R.string.lobbyBtnPlay)
-                textViewForID.text = getString(R.string.lobbyID, gameID + 1)
+                textViewForID.text = getString(R.string.lobbyID, gameID)
                 progressBar.visibility = View.GONE
             }.addOnCompleteListener {
                 getPlayersFromFirestore()
-                val docRef = db.collection("games").document((gameID + 1).toString())
+                val docRef = db.collection("games").document((gameID).toString())
                 docRef.addSnapshotListener { snap: DocumentSnapshot?, e ->
                     Log.w("Snap", "Listening.", e)
                     getPlayersFromFirestore()
@@ -95,15 +104,18 @@ class LobbyActivity : AppCompatActivity() {
             list.add(imageModel)
         }
         val imageModelArrayList: ArrayList<PlayerModel> = list
-        val recyclerView = findViewById<View>(R.id.recyclerView) as? RecyclerView
+        val recyclerView = findViewById<View>(R.id.recyclerView) as RecyclerView
+
         val layoutManager = LinearLayoutManager(this)
-        if (recyclerView != null) {
-            recyclerView.layoutManager = layoutManager
-        }
         val mAdapter = PlayerAdapter(imageModelArrayList)
-        if (recyclerView != null) {
-            recyclerView.adapter = mAdapter
-        }
+        val dividerItemDecoration = DividerItemDecoration(
+            recyclerView!!.context,
+            layoutManager.orientation
+        )
+        recyclerView.addItemDecoration(dividerItemDecoration)
+        recyclerView.layoutManager = layoutManager
+
+        recyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
         progressBar.visibility = View.GONE
     }

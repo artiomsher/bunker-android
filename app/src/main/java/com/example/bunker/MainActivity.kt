@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                         db.collection("games").document(enteredID)
                             .update("currentPlayers", FieldValue.arrayUnion(mAuth.currentUser!!.displayName))
                             .addOnSuccessListener {
-                                joinLobby()
+                                joinLobby(enteredID.toInt())
                             }
                             .addOnFailureListener{
                                 Log.d("FAILURE", "Cannot connect to lobby")
@@ -112,11 +112,9 @@ class MainActivity : AppCompatActivity() {
             username.text = mAuth.currentUser?.displayName
         }
     }
-    private fun joinLobby() {
+    private fun joinLobby(gameID: Int) {
         val intent = Intent(this, LobbyActivity::class.java)
+        intent.putExtra("gameID", gameID)
         startActivity(intent)
     }
-
-
-
 }

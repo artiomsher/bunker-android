@@ -1,7 +1,5 @@
 package com.example.bunker
 
-import android.hardware.SensorAdditionalInfo
-
 class Player(private val name: String, private val age: Int, private val gender: String,
              private val childFree: Boolean
 ) {

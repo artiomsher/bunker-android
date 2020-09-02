@@ -1,6 +1,5 @@
 package com.example.bunker
 
-import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
