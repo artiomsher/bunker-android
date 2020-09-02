@@ -44,9 +44,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, LobbyActivity::class.java)
             startActivity(intent)
         }
-
         loginBtn = findViewById(R.id.profileBtn)
-
         loginBtn.setOnClickListener{
             if(mAuth.currentUser == null) {
                 val intent = Intent(this, SignupActivity::class.java)

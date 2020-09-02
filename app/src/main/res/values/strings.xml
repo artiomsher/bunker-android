@@ -32,4 +32,7 @@
     <string name="lobbyBtnPlay">Play</string>
     <string name="logginFail">NOT LOGGED IN</string>
     <string name="lobbyID">ID: %d</string>
+    <string name="gamePhaseLobby">lobby</string>
+    <string name="gamePhaseGame">game</string>
+    <string name="gamePhaseFinished">finished</string>
 </resources>

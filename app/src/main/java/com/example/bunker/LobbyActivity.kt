@@ -1,5 +1,6 @@
 package com.example.bunker
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -43,10 +45,18 @@ class LobbyActivity : AppCompatActivity() {
             gameID = intent.getIntExtra("gameID", 0)
             textViewForID.text = getString(R.string.lobbyID, gameID)
             getPlayersFromFirestore()
-
         }
         openLobby.setOnClickListener {
-            createLobby()
+            if(openLobby.text != getString(R.string.lobbyBtnPlay)) {
+                createLobby()
+            } else {
+                db.collection("games").document(gameID.toString())
+                    .update("phase", "game")
+                    .addOnFailureListener{
+                        Log.d("FAILURE", "Cannot change game phase")
+                    }
+            }
+
         }
     }
 
@@ -58,7 +68,6 @@ class LobbyActivity : AppCompatActivity() {
                     listOfPlayers = document.data!!.get("currentPlayers") as ArrayList<String>
             }.addOnCompleteListener {
                 adapterImplementation()
-
             }
     }
 
@@ -76,7 +85,8 @@ class LobbyActivity : AppCompatActivity() {
                     "time" to timestamp.toDate(),
                     "numOfPlayers" to 1,
                     "host" to mAuth.currentUser!!.displayName,
-                    "currentPlayers" to arrayListOf(mAuth.currentUser!!.displayName)
+                    "currentPlayers" to arrayListOf(mAuth.currentUser!!.displayName),
+                    "phase" to getString(R.string.gamePhaseLobby)
                 )
                 db.collection("games").document((gameID).toString()).set(game)
                 openLobby.text = getString(R.string.lobbyBtnPlay)
@@ -86,9 +96,13 @@ class LobbyActivity : AppCompatActivity() {
                 getPlayersFromFirestore()
                 val docRef = db.collection("games").document((gameID).toString())
                 docRef.addSnapshotListener { snap: DocumentSnapshot?, e ->
-                    Log.w("Snap", "Listening.", e)
+                    if (snap != null) {
+                        if(snap.get("phase") == "game") {
+                            val intent = Intent(this, GameActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
                     getPlayersFromFirestore()
-                    return@addSnapshotListener
                 }
             }
     }
@@ -99,7 +113,6 @@ class LobbyActivity : AppCompatActivity() {
         listOfPlayers.forEach() { singleElement ->
             val imageModel = PlayerModel()
             imageModel.setUsernames(singleElement)
-            Log.d("forEach", singleElement)
             imageModel.setImage_drawables(myImageList)
             list.add(imageModel)
         }
@@ -114,7 +127,6 @@ class LobbyActivity : AppCompatActivity() {
         )
         recyclerView.addItemDecoration(dividerItemDecoration)
         recyclerView.layoutManager = layoutManager
-
         recyclerView.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
         progressBar.visibility = View.GONE
