@@ -1,16 +1,13 @@
 package com.example.bunker
 
-class Bunker(numOfPlayers: Int, bunkerId: Int) {
-    private val bunkerId = bunkerId
-    private val activePlayers = numOfPlayers
-    private val sizeInMeters: Int? = null
-    private val additionalInfo: String? = null
-    private val otherCharacteristicsDuringTheGame: String? = null
-    private var sizeInPlayers: Int? = null
-    fun getSizeInPlayers(): Int? {
-        return sizeInPlayers
-    }
-    fun setSizeInPlayers(sizeInPlayers: Int) {
-        this.sizeInPlayers = sizeInPlayers
-    }
+import java.io.Serializable
+
+class Bunker(numOfPlayers: Int = 0, bunkerId: Int = 0) : Serializable {
+    var id = bunkerId
+    var activePlayers = numOfPlayers
+    var apocalypseDescription: String? = null
+    var sizeInMeters: Int? = null
+    var additionalInfo: String? = null
+    var otherCharacteristicsDuringTheGame: String? = null
+    var capacityOfBunker: Int? = null
 }

@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         updateNickname()
     }
-    public fun joinDialog(savedInstanceState: View?) {
+    fun joinDialog(savedInstanceState: View?) {
         val builder = AlertDialog.Builder(this)
         val db = Firebase.firestore
         val view = LayoutInflater.from(this@MainActivity).inflate(R.layout.dialog_join, null)

@@ -1,5 +1,6 @@
 package com.example.bunker
 
+import android.content.Intent
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,7 @@ class PlayerAdapter(private val imageModelArrayList: MutableList<PlayerModel>) :
         val info = imageModelArrayList[position]
         holder.imgView.setImageResource(info.getImage_drawables())
         holder.txtMsg.text = info.getUsernames()
+
     }
 
     override fun getItemCount(): Int {

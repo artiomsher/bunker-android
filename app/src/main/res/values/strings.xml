@@ -35,4 +35,7 @@
     <string name="gamePhaseLobby">lobby</string>
     <string name="gamePhaseGame">game</string>
     <string name="gamePhaseFinished">finished</string>
+    <string name="apocalypseFile">Bunker/Apocalypse.txt</string>
+    <string name="profilePic"> Characteristics of a player </string>
+    <string name="BunkerPic">Bunker characteristics</string>
 </resources>
